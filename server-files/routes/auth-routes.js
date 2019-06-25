@@ -49,6 +49,28 @@ router.get('/login/failed', (req, res) => {
     });
   }
 });
+
+//For Facebook
+router.get('/facebook', passport.authenticate('facebook'));
+
+router.get(
+  '/facebook/redirect',
+  passport.authenticate('facebook', {
+    successRedirect: 'http://localhost:3000',
+    failureRedirect: 'http://localhost:4000/auth/login/failed'
+  })
+);
+
+//For Twitter
+router.get('/twitter', passport.authenticate('twitter'));
+
+router.get(
+  '/twitter/redirect',
+  passport.authenticate('twitter', {
+    successRedirect: 'http://localhost:3000',
+    failureRedirect: 'http://localhost:4000/auth/login/failed'
+  })
+);
 //For github
 
 router.get('/github', passport.authenticate('github'));
