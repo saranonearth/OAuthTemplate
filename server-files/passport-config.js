@@ -31,7 +31,18 @@ passport.use(
       callbackURL: '/auth/github/redirect'
     },
     async (accessToken, refresToken, profile, done) => {
-      console.log(profile);
+      let user = await User.findOne({ keyId: profile.id });
+
+      if (!user) {
+        const newuser = await new User({
+          keyId: profile.id,
+          name: profile.name
+        });
+        await newuser.save();
+        done(null, newuser);
+      }
+
+      done(null, user);
     }
   )
 );
@@ -39,7 +50,7 @@ passport.use(
 passport.use(
   new GoogleStrategy(
     {
-      callbackURL: '/auth/github/redirect ',
+      callbackURL: '/auth/google/redirect ',
       clientID: clientId,
       clientSecret: clientSecret
     },
